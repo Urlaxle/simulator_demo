@@ -1,0 +1,153 @@
+<?xml version="1.0" ?>
+
+<sdf version="1.9">
+	<model name="robot" canonical_link="body_link">
+
+	<!-- Body Link -->
+	<link name="body_link">
+	<pose relative_to="__model__"> 0.0 0.0 0.0 0.0 0.0 0.0 </pose>	
+
+	<!-- Inertia of link -->
+	<inertial>
+		<mass> 5.2 </mass>
+	</inertial>
+
+	<!-- Visual body of robot -->
+	<visual name="body_link_visual">
+		<pose> 0.0 0.0 0.0 0.0 1.57 0.0 </pose>
+		<geometry>
+			<cylinder>		
+				<radius> 0.2 </radius>
+				<length> 1.2 </length>
+			</cylinder>
+		</geometry>
+		<material>
+			<diffuse>
+				1 0 0 1	
+			</diffuse>
+		</material>
+	</visual>
+
+
+	<!-- Body Collision -->
+	<collision name="body_link_collision">
+		<pose> 0.0 0.0 0.0 0.0 1.57 0.0 </pose>
+		<geometry>
+			<box><size>0.2 0.2 0.2</size></box>
+			<!--
+			<cylinder>
+				<radius> 0.2 </radius>	
+				<length> 1.2 </length>
+			</cylinder>
+			-->
+		</geometry>
+	</collision>
+	</link>
+
+	<!-- Nose of robot -->
+	<link name="nose_link">
+			<pose relative_to="body_link"> 0.6 0.0 0.0 0.0 0.0 0.0 </pose>	
+			<!-- Visual cone of robot -->
+			<visual name="nose_visual">
+				<pose> 0.0 0.0 0.0 0.0 0.0 0.0 </pose>
+				<geometry>
+					<sphere>
+						<radius> 0.2 </radius>
+					</sphere>
+				</geometry>
+			</visual>
+			<!--
+			<collision name="nose_collision">
+				<pose> 0.0 0.0 0.0 0.0 0.0 0.0 </pose>
+				<geometry>
+					<sphere>
+						<radius> 0.2 </radius>
+					</sphere>
+				</geometry>
+			</collision>
+			-->
+	</link>
+
+	<!-- Nose Joint -->
+	<joint name="nose_joint" type="fixed">
+		<child> nose_link </child>
+		<parent> body_link </parent>
+	</joint>
+
+	<!-- Camera -->
+	<link name="camera_link">
+		<pose relative_to="body_link"> 0.0 0.0 -0.22 0.0 0.0 0.0 </pose>	
+            <sensor type="camera" name="front_camera"> 
+                <camera> 
+                    <image> 
+                        <width> 1920 </width>
+                        <height> 1080 </height>
+                    </image>
+                    <horizontal_fov> 1.047 </horizontal_fov>
+                    <clip> 
+                        <near> 0.1 </near>
+                        <far> 100.0 </far>
+                    </clip>
+                </camera>
+                <always_on> 1 </always_on>
+                <update_rate> 30 </update_rate>
+                <visualize> 1 </visualize>
+				<topic> robot/camera </topic>
+            </sensor>
+		
+		<visual name="camera_visual">
+			<pose> 0.0 0.0 0.0 0.0 0.0 0.0 </pose>
+			<geometry>
+				<box><size> 0.2 0.2 0.2 </size></box>
+			</geometry>
+		</visual>
+	</link>
+		
+	<!-- Camera Joint -->
+	<joint name="camera_joint" type="fixed">
+		<child> camera_link </child>
+		<parent> body_link </parent>
+	</joint>
+
+	<!-- Forward Thrusters -->
+	<link name="forward_thruster_link">
+		<pose relative_to="body_link"> -0.6 0.0 0.0 0.0 0.0 3.14 </pose>
+		<visual name="forward_thruster_visual">
+			<pose> 0.0 0.0 0.0 0.0 0.0 0.0 </pose>
+			<geometry>
+				<mesh>
+					<uri> model://models/robot/meshes/propeller.dae </uri>
+					<scale> 2 2 2 </scale>
+				</mesh>
+			</geometry>
+		</visual>
+	</link>
+
+
+    <!-- Forward Thruster Joint -->
+    <joint name="forward_thruster_joint" type="revolute"> 
+        <child> forward_thruster_link </child>
+        <parent> body_link </parent>
+        <axis>
+           <xyz> 0 0 -1 </xyz>
+           <limit>
+              <lower> -1e+16 </lower>
+              <upper> 1e+16 </upper>
+           </limit>
+        </axis>
+     </joint>
+
+   	 <plugin
+       filename="gz-sim-thruster-system"
+       name="gz::sim::systems::Thruster">
+       <namespace>robot</namespace>
+       <joint_name>forward_thruster_joint</joint_name>
+       <thrust_coefficient>0.004422</thrust_coefficient>
+       <fluid_density>1025</fluid_density>
+       <propeller_diameter>0.2</propeller_diameter>
+       <max_thrust_cmd>10</max_thrust_cmd>
+       <min_thrust_cmd>-10</min_thrust_cmd>
+     </plugin>
+
+	</model>
+</sdf>
