@@ -87,11 +87,19 @@
 
 	<!-- Robot -->
 	<model name="robot">
-		<pose> 0 0 -50 0 0 0 </pose>
+		<pose> 0 0 -90 0 0 0 </pose>
 		<include>
 			<uri>
 				model://models/robot/model.sdf
 			</uri>
+		</include>
+	</model>
+
+	<!-- Shipwreck -->
+	<model name="shipwreck">
+		<pose> 15 0 -98 0.1 0.2 0.05 </pose>
+		<include>
+			<uri>model://models/shipwreck/model.sdf</uri>
 		</include>
 	</model>
 

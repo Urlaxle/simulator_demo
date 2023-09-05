@@ -13,12 +13,11 @@ class ThrusterController(Node):
         self.joy_subscriber = self.create_subscription(Joy, "/joy", self.callback, 10)
 
     def callback(self, msg):
-        thruster_value = msg.axes[3]
+        thruster_value = msg.axes[4]
         # Deadzone in case of bad joystick
         if (abs(thruster_value) < 0.05):
             thruster_value = 0.0
         
-        self.get_logger().info("Value: {}".format(thruster_value))
         msg = Float64()
         msg.data = thruster_value
         self.vel_publisher.publish(msg)

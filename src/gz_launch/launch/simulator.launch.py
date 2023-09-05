@@ -50,8 +50,9 @@ def generate_launch_description():
             package="ros_gz_bridge",
             executable="parameter_bridge",
             arguments=[
-                "/model/robot/joint/forward_thruster_joint/cmd_thrust@std_msgs/Float64]gz.msgs.Double",
+                "/model/robot/joint/forward_thruster_joint/cmd_thrust@std_msgs/msg/Float64]gz.msgs.Double",
                 "/robot/camera@sensor_msgs/msg/Image[gz.msgs.Image",
+                "/robot/imu@sensor_msgs/msg/Imu[gz.msgs.IMU",
                 ],
             )
     

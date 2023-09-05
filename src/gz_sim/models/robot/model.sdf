@@ -9,7 +9,7 @@
 
 	<!-- Inertia of link -->
 	<inertial>
-		<mass> 5.2 </mass>
+		<mass> 4.2 </mass>
 	</inertial>
 
 	<!-- Visual body of robot -->
@@ -76,7 +76,7 @@
 
 	<!-- Camera -->
 	<link name="camera_link">
-		<pose relative_to="body_link"> 0.0 0.0 -0.22 0.0 0.0 0.0 </pose>	
+		<pose relative_to="body_link"> 0.0 0.0 -0.22 0.0 1.57 0.0 </pose>	
             <sensor type="camera" name="front_camera"> 
                 <camera> 
                     <image> 
@@ -109,11 +109,73 @@
 		<parent> body_link </parent>
 	</joint>
 
+	<!-- IMU -->
+	<link name="imu_link">
+		<pose relative_to="body_link"> 0.0 0.0 0.0 0.0 0.0 0.0 </pose>
+		<sensor type="imu" name="robot_imu">
+			<update_rate>500</update_rate>
+			<imu>
+				<angular_velocity>
+					<x><noise type="gaussian">
+						<mean>0.0</mean>
+						<stddev>0.00</stddev>
+						<bias_mean>0</bias_mean>
+						<bias_stddev>0</bias_stddev>
+					</noise></x>
+					<y><noise type="gaussian">
+						<mean>0.0</mean>
+						<stddev>0.00</stddev>
+						<bias_mean>0</bias_mean>
+						<bias_stddev>0</bias_stddev>
+					</noise></y>
+					<z><noise type="gaussian">
+						<mean>0.0</mean>
+						<stddev>0.00</stddev>
+						<bias_mean>0</bias_mean>
+						<bias_stddev>0</bias_stddev>
+				</noise></z>
+				</angular_velocity>
+				<linear_acceleration>
+					<x><noise type="gaussian">
+						<mean>0.0</mean>
+						<stddev>0.00</stddev>
+						<bias_mean>0</bias_mean>
+						<bias_stddev>0</bias_stddev>
+					</noise></x>
+					<y><noise type="gaussian">
+						<mean>0.0</mean>
+						<stddev>0.00</stddev>
+						<bias_mean>0</bias_mean>
+						<bias_stddev>0</bias_stddev>
+					</noise></y>
+					<z><noise type="gaussian">
+						<mean>0.0</mean>
+						<stddev>0.00</stddev>
+						<bias_mean>0</bias_mean>
+						<bias_stddev>0</bias_stddev>
+					</noise></z>
+				</linear_acceleration>
+			</imu>
+			<topic>/robot/imu</topic>
+		</sensor>
+	</link>
+
+	<joint name="imu_joint" type="fixed">
+		<child> imu_link </child>
+		<parent> body_link </parent>
+	</joint>
+
+
+
+
+
+
+
 	<!-- Forward Thrusters -->
 	<link name="forward_thruster_link">
-		<pose relative_to="body_link"> -0.6 0.0 0.0 0.0 0.0 3.14 </pose>
+		<pose relative_to="body_link"> -0.6 0.0 0.0 0.0 1.57 3.14 </pose>
 		<visual name="forward_thruster_visual">
-			<pose> 0.0 0.0 0.0 0.0 0.0 0.0 </pose>
+			<pose> 0.0 0.0 0.0 0.0 -1.57 0.0 </pose>
 			<geometry>
 				<mesh>
 					<uri> model://models/robot/meshes/propeller.dae </uri>
